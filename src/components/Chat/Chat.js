@@ -1,5 +1,6 @@
 import { Avatar,IconButton } from "@material-ui/core";
-import { AttachFile,InsertEmoticon,MoreVert,SearchOutlined } from "@material-ui/icons";
+// import { AttachFile,InsertEmoticon,MoreVert,SearchOutlined } from "@material-ui/icons";   // here error was comming bcz of InsertEmoction Never used
+import { AttachFile,MoreVert,SearchOutlined } from "@material-ui/icons";
 import MicIcon from "@material-ui/icons/Mic";
 import InsertEmoticonIcon  from "@material-ui/icons/InsertEmoticon";
 import React,{ useState } from 'react';
