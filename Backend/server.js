@@ -2,15 +2,33 @@
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
+import { MessageSharp } from "@material-ui/icons"
+// importing databse Schema for messages
+import Messages from "./dbMessages.js"
+// pusher for realtime
+// const Pusher = require("pusher"); //from the pusher docs
+import Pusher from "pusher"
+
+// middleware
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(cors())
 
+const pusher = new Pusher({
+    appId: "1250731",
+    key: "3945dac4856112b7c22c",
+    secret: "275d7c84f7f849846d1a",
+    cluster: "ap2",
+    useTLS: true
+  });
+
 mongoose.connect("mongodb://localhost:27017/myLoginRegisterDB", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    // video 
+    useNewUrlParser :true
 }, () => {
     console.log("DB connected")
 })
@@ -24,11 +42,38 @@ const userSchema = new mongoose.Schema({
 
 const User = new mongoose.model("User", userSchema)
 
-// app get for test on port 9000
+// database collection 2  of messages
 
+const db = mongoose.connection;
+
+db.once('open',()=>{
+    console.log("DB 2 connected")
+    const msgCollection = db.collection('messagecontents');
+    // const changeStream = msgCollection.watch();
+    // changeStream.on('change',(change)=>{
+    //     console.log(change)
+    //     if(change.operationType==='insert'){
+    //         const messageDetails = change.fullDocument;
+    //         pusher.trigger('messages','inserted',{
+    //             name:messageDetails.name,
+    //             message:messageDetails.message,
+    //             timestamp:messageDetails.timestamp,
+    //             received:messageDetails.received,
+    //         });
+    //     }else{
+    //         console.log("error triggering")
+    //     }
+    // });
+});
+
+// app get for test on port 9000
 app.get("/" , (req,res) =>{
     res.send("my api is working")
 })
+
+
+
+
 
 //Routes for login and registration 
 app.post("/login", (req, res)=> {
@@ -76,9 +121,39 @@ app.post("/register", (req, res)=> {
             })
         }
     })
-    
 }) 
 
+// api routes of whatsapp
+// get all rhe messages that are in the database
+// for one room here
+// on succesful response we need 100 to download 
+
+app.get('/messages/sync',(req,res)=>{
+    Messages.find((err,data)=>{
+        if(err){
+            res.status(500).send(err)
+        }else{
+            res.status(200).send(data)
+        }
+    })
+
+})
+// then send new post requests for new messages 
+
+app.post('/messages/new' , (req,res) => {
+    const dbMessage = req.body 
+    Messages.create(dbMessage,(err,data) => {
+        if(err){
+            res.status(500).send(err)
+        }else {
+            res.status(201).send(data)
+        }
+    })
+})
+
+
+
+ 
 app.listen(9002,() => {
     console.log("BE started at port 9002")
 })
