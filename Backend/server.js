@@ -2,7 +2,6 @@
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
-import { MessageSharp } from "@material-ui/icons"
 // importing databse Schema for messages
 import Messages from "./dbMessages.js"
 // pusher for realtime
@@ -24,7 +23,13 @@ const pusher = new Pusher({
     useTLS: true
   });
 
-mongoose.connect("mongodb://localhost:27017/myLoginRegisterDB", {
+//   allowing access to database from anywheree
+// app.use((req,res,next) => {
+//     res.setHeader("Acess-Control-Allow-Origin" , "*");
+//     res.setHeader("Access-Control-Allow-Headers" , "*");
+// });
+// database Configuration
+mongoose.connect("mongodb+srv://subhan:subhan123@secretscluster.6l7wc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // video 
@@ -42,38 +47,35 @@ const userSchema = new mongoose.Schema({
 
 const User = new mongoose.model("User", userSchema)
 
-// database collection 2  of messages
+// database collection 2  of messages when opened we are sending the data 
 
 const db = mongoose.connection;
 
 db.once('open',()=>{
-    console.log("DB 2 connected")
+    console.log("DB 2 of messages connected")
     const msgCollection = db.collection('messagecontents');
-    // const changeStream = msgCollection.watch();
-    // changeStream.on('change',(change)=>{
-    //     console.log(change)
-    //     if(change.operationType==='insert'){
-    //         const messageDetails = change.fullDocument;
-    //         pusher.trigger('messages','inserted',{
-    //             name:messageDetails.name,
-    //             message:messageDetails.message,
-    //             timestamp:messageDetails.timestamp,
-    //             received:messageDetails.received,
-    //         });
-    //     }else{
-    //         console.log("error triggering")
-    //     }
-    // });
+    const changeStream = msgCollection.watch();
+    changeStream.on('change',(change)=>{
+        console.log(change)
+        if(change.operationType==='insert'){
+            const messageDetails = change.fullDocument;
+            pusher.trigger('messages','inserted',{
+                name:messageDetails.name,
+                message:messageDetails.message,
+                timestamp:messageDetails.timestamp,
+                received:messageDetails.received,
+            });
+        }else{
+            console.log("error triggering")
+        }
+    });
 });
 
-// app get for test on port 9000
+// app get for test on port 9002
+
 app.get("/" , (req,res) =>{
     res.send("my api is working")
 })
-
-
-
-
 
 //Routes for login and registration 
 app.post("/login", (req, res)=> {
@@ -92,11 +94,8 @@ app.post("/login", (req, res)=> {
 }) 
 
 // registering the users frontend sends a validated data that is a user schema object
-
-
 app.post("/register", (req, res)=> {
     console.log(req.body)
-
     // we are taking the user out
     const { name, email, password} = req.body
     // finding if the user is already present in database
@@ -150,10 +149,6 @@ app.post('/messages/new' , (req,res) => {
         }
     })
 })
-
-
-
- 
 app.listen(9002,() => {
     console.log("BE started at port 9002")
 })
