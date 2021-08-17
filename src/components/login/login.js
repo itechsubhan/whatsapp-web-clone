@@ -37,9 +37,9 @@ const Login = ({ setLoginUser}) => {
             <input type="text" name="email" value={user.email} onChange={handleChange} placeholder="Enter your Email"></input>
             <input type="password" name="password" value={user.password} onChange={handleChange}  placeholder="Enter your Password" ></input>
             <div className="button" onClick={login}>Login</div>
-            <div>or</div>
+            <div className="or"><p>OR</p></div>
             {/* it  */}
-            <div className="button" onClick={() => history.push("/register")}>Register</div>
+            <div className="ebutton" onClick={() => history.push("/register")}>Register</div>
         </div>
     )
 }
