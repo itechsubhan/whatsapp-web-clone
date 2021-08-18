@@ -22,12 +22,6 @@ const pusher = new Pusher({
     cluster: "ap2",
     useTLS: true
   });
-
-//   allowing access to database from anywheree
-// app.use((req,res,next) => {
-//     res.setHeader("Acess-Control-Allow-Origin" , "*");
-//     res.setHeader("Access-Control-Allow-Headers" , "*");
-// });
 // database Configuration
 mongoose.connect("mongodb+srv://subhan:subhan123@secretscluster.6l7wc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -70,7 +64,6 @@ db.once('open',()=>{
         }
     });
 });
-
 // app get for test on port 9002
 
 app.get("/" , (req,res) =>{

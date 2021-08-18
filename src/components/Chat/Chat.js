@@ -5,11 +5,27 @@ import MicIcon from "@material-ui/icons/Mic";
 import InsertEmoticonIcon  from "@material-ui/icons/InsertEmoticon";
 import React,{ useState } from 'react';
 import './Chat.css';
-function Chat() {
+import axios from 'axios'
+function Chat({ messages }) {
     const [input,setInput] = useState("");
-    const sendMessage = (e) => {
+    const sendMessage = async (e) => {
         e.preventDefault();
         console.log("You typed >>>",input);
+        
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+        // axios second parameter is the data that is sent
+
+        axios.post("http://localhost:9002/messages/new" , {
+            message : input,
+            name : "Subhan" ,
+            timestamp : dateTime,
+            recieved: true
+        })
+        setInput("");
+        // after the user send set input empty
     };
     return (
         <div className="chat">
@@ -32,23 +48,23 @@ function Chat() {
                 </div>
             </div>
             <div className="chat__body">
-                <p className={`chat__message ${true && 
-                "chat__reciever"}`}>
+            {/* at this point we need to check wether the name of the person is same so that we can attach the recieved and reciever class */}
+            {messages.map((message) => (
+                <p className={`chat__message ${message.recieved &&  "chat__reciever"}`}>
                 <span className="chat__name">
-                    Asgher
+                    {message.name}
                     </span>
-                    Hey Guys
-                    <span className="chat__timestamp">3:52pm</span>
+                    {message.message}
+                    <span className="chat__timestamp">{message.timestamp}</span>
                 </p>
-                <p className="chat__message">
-                    Hey Guys
-                    <span className="chat__timestamp">3:52am</span>
-                </p>
+            ))}
             </div>
             <div className="chat__footer">
                  <InsertEmoticonIcon />
                 <form>
-                    <input value={input} onChange={e => setInput(e.target.value)} placeholder="Type a message" type="text" />
+                    <input value={input} 
+                    onChange={e => setInput(e.target.value)}
+                    placeholder="Type a message" type="text" />
                     <button onClick={sendMessage} type="submit">Send a Message</button>
                 </form>
                 <MicIcon />
