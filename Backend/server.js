@@ -23,7 +23,7 @@ const pusher = new Pusher({
     useTLS: true
   });
 // database Configuration
-mongoose.connect("mongodb+srv://subhan:subhan123@secretscluster.6l7wc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://subhan:subhan123@cluster0.spz0s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // video 

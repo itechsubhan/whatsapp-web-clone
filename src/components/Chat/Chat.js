@@ -20,9 +20,9 @@ function Chat({ messages }) {
 
         axios.post("http://localhost:9002/messages/new" , {
             message : input,
-            name : "Subhan" ,
+            name : "demo name" ,
             timestamp : dateTime,
-            recieved: true
+            recieved: false
         })
         setInput("");
         // after the user send set input empty
