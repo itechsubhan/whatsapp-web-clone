@@ -23,7 +23,7 @@ const Login = ({ setLoginUser}) => {
 
     // login posts a request and sets login user 
     const login = () => {
-        axios.post("http://localhost:9002/login", user)
+        axios.post("https://whatapp-backend1.herokuapp.com/login", user)
         .then(res => {  
             alert(res.data.message)
             setLoginUser(res.data.user)
