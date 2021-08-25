@@ -18,7 +18,7 @@ const Homepage = ({setLoginUser}) => {
 
   useEffect( () => {
     // we are not getting op when we use /messages/sync
-    axios1.get("http://localhost:9002/messages/sync").then((response) => {
+    axios1.get("https://whatapp-backend1.herokuapp.com/messages/sync").then((response) => {
       setMessages(response.data);
     });
   } , [] );

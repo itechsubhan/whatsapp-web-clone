@@ -18,7 +18,7 @@ function Chat({ messages }) {
         var dateTime = date+' '+time;
         // axios second parameter is the data that is sent
 
-        axios.post("https://whatapp-backend1.herokuapp.com//messages/new" , {
+        axios.post("https://whatapp-backend1.herokuapp.com/messages/new" , {
             message : input,
             name : "demo name" ,
             timestamp : dateTime,
