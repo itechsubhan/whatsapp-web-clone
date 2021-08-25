@@ -143,7 +143,7 @@ app.post('/messages/new' , (req,res) => {
     })
 })
 app.listen(process.env.PORT||9002,() => {
-    console.log("BE started at port 9002")
+    console.log("BE started at port 9002||process",process.env.port)
 })
 
 // now go to frontend and work to implement the functionality
