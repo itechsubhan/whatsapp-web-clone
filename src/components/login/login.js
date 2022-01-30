@@ -4,10 +4,8 @@ import axios from "axios"
 import { useHistory } from "react-router-dom"
 
 const Login = ({ setLoginUser}) => {
-
     // creating a history for user i. e instance of history 
     const history = useHistory()
-
     const [ user, setUser] = useState({
         email:"",
         password:""

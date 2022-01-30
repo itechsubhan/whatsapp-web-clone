@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Sidebar from "./../Sidebar/Sidebar"
 import Chat from "../Chat/Chat"
+import "./homepage.css"
 // import './App.css'
 // import "../App.css"
 // import Sidebar from "src\Sidebar.js"
@@ -52,8 +53,8 @@ console.log(messages)
       {/* now we are rendering the messages by pasing the messages array into the chat bar component */}
       <Chat   messages = {messages} />
       {/* this above thing is where props come into picture */}
-      <div className="button" onClick={() => setLoginUser({})} >Logout</div>
       </div> 
+      <div className="button logout" onClick={() => setLoginUser({})} >Logout </div>
     </div>
   )
 }

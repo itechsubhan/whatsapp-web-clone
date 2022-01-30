@@ -1,10 +1,12 @@
 .chat{
+    /* margin-right: 25px; */
     flex: 0.65;
     line-height: 0.3em ;
     display: flex;
     flex-direction: column;
 }
 .chat__header{
+    
     padding: 20px;
     display: flex;
     align-items: center;
@@ -54,7 +56,8 @@
 }
 
 .chat__body{
-     flex: 1;
+
+     flex: auto;
      background-image: url("https://cdn.dribbble.com/users/77121/screenshots/15191750/media/0ce749e630ca31ffd76e105b09340b45.gif");
      background-repeat: repeat;
      background-position: center;
